@@ -33,10 +33,10 @@ sop = st.number_input("Statement of Purpose (1.0 - 5.0)", min_value=1.0, max_val
 # -----------------------------
 # Adjust this based on your model scaling
 scaled_data = pd.DataFrame({
-    'GRE': [gre / 34],      # GRE scaled to 10
-    'TOEFL': [toefl / 12],  # TOEFL scaled to 10
+    'GRE': [gre],      
+    'TOEFL': [toefl],  
     'CGPA': [cgpa],
-    'SOP': [sop * 2]        # SOP 1–5 → scaled to 2–10 range (adjust if different)
+    'SOP': [sop] 
 })
 
 # -----------------------------
