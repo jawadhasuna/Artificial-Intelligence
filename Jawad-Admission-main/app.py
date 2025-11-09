@@ -15,7 +15,7 @@ import joblib
 # 🎓 Load the Trained Model
 # -----------------------------
 # Make sure your trained logistic regression model is saved as 'admission_model.pkl'
-model = joblib.load("admission_model.pkl")
+model = joblib.load("Jawad-Admission-main/admission_model.pkl")
 
 st.title("🎓 University Admission Prediction App")
 st.write("Enter your academic details to check your **chance of admission**!")
