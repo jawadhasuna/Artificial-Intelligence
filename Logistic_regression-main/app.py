@@ -3,7 +3,7 @@ import joblib
 import numpy as np
 
 # Load the saved logistic regression model
-model = joblib.load("iris_logistic_regression_model.pkl")
+model = joblib.load("Logistic_regression-main/iris_logistic_regression_model.pkl")
 
 st.title("🌼 Iris Flower Classification App")
 st.write("This app predicts the type of Iris flower based on input measurements.")
