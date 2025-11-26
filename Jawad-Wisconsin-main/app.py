@@ -1,6 +1,6 @@
 
 # -*- coding: utf-8 -*-
-"""Jay's Hospial Breast Cancer Prediction App"""
+"""Jay's Hospital Breast Cancer Prediction App"""
 
 import streamlit as st
 import numpy as np
