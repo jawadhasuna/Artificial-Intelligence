@@ -13,7 +13,7 @@ model = joblib.load("Jawad-Wisconsin-main/svm_rbf_model.pkl")
 scaler = joblib.load("Jawad-Wisconsin-main/scaler.pkl")
 selected_features = joblib.load("Jawad-Wisconsin-main/selected_features.pkl")
 
-st.title("🩺 Breast Cancer Prediction App")
+st.title("Jawad's Hospital🩺 Breast Cancer Prediction App")
 st.write("Enter values for the top features to predict whether the cancer is **Malignant** or **Benign**.")
 
 # -----------------------------
