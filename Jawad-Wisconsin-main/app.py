@@ -64,8 +64,4 @@ if st.button("Predict Cancer Type 🩺"):
 
     st.write(f"Confidence Score: {confidence:.2f}")
 
-# -----------------------------
-# 📊 Model Accuracy (Optional)
-# -----------------------------
-svm_acc = 0.9649  # Replace with your RBF SVM test accuracy
-st.write(f"Model Accuracy on Test Set: {svm_acc*100:.2f}%")
+
