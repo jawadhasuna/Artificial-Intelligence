@@ -1,19 +1,24 @@
+
+# -*- coding: utf-8 -*-
+"""Breast Cancer Prediction App"""
+
 import streamlit as st
 import numpy as np
 import joblib
 
-# Load trained model, scaler, and feature names
+# -----------------------------
+# 🎯 Load the Trained Model & Scaler
+# -----------------------------
 model = joblib.load("Jawad-Wisconsin-main/svm_rbf_model.pkl")
 scaler = joblib.load("Jawad-Wisconsin-main/scaler.pkl")
 selected_features = joblib.load("Jawad-Wisconsin-main/selected_features.pkl")
 
-st.title("Breast Cancer Prediction App")
-st.write("""
-Enter the values for the top 5 features below. 
-The app will predict whether the cancer is **Malignant** or **Benign**.
-""")
+st.title("🩺 Breast Cancer Prediction App")
+st.write("Enter values for the top features to predict whether the cancer is **Malignant** or **Benign**.")
 
-# Optional: guide user with feature ranges (based on dataset)
+# -----------------------------
+# 🧩 Feature Ranges (Guide User)
+# -----------------------------
 feature_ranges = {
     'radius_mean': (6.0, 30.0),
     'perimeter_mean': (40.0, 190.0),
@@ -27,37 +32,40 @@ feature_ranges = {
     'concave points_worst': (0.0, 0.3)
 }
 
-# Create input fields dynamically for top features
+# -----------------------------
+# 🖊️ Input Fields for Top Features
+# -----------------------------
 inputs = []
 for feature in selected_features:
     min_val, max_val = feature_ranges.get(feature, (0.0, 100.0))
     value = st.number_input(
-        f"Enter {feature} (range: {min_val} - {max_val})", 
-        min_value=float(min_val), 
-        max_value=float(max_val), 
+        f"{feature} (range: {min_val}-{max_val})",
+        min_value=float(min_val),
+        max_value=float(max_val),
         step=0.01
     )
     inputs.append(value)
 
-# Convert inputs to numpy array
 user_input = np.array(inputs).reshape(1, -1)
-
-# Scale the input
 user_input_scaled = scaler.transform(user_input)
 
-# Button to predict
-if st.button("Predict"):
+# -----------------------------
+# 🔍 Make Prediction
+# -----------------------------
+if st.button("Predict Cancer Type 🩺"):
     prediction = model.predict(user_input_scaled)[0]
-    confidence = model.decision_function(user_input_scaled)[0]  # higher = more confidence
+    confidence = model.decision_function(user_input_scaled)[0]
 
+    st.subheader("Prediction Result:")
     if prediction == 1:
-        st.error(f"Prediction: Malignant (Cancerous)")
+        st.error("❌ Malignant (Cancerous)")
     else:
-        st.success(f"Prediction: Benign (Non-cancerous)")
-    
+        st.success("✅ Benign (Non-cancerous)")
+
     st.write(f"Confidence Score: {confidence:.2f}")
 
-# Show model accuracy (from your test set)
-svm_acc = 0.9649  # replace with your actual accuracy
-
-st.write(f"Model Accuracy: {svm_acc*100:.2f}%")
+# -----------------------------
+# 📊 Model Accuracy (Optional)
+# -----------------------------
+svm_acc = 0.9649  # Replace with your RBF SVM test accuracy
+st.write(f"Model Accuracy on Test Set: {svm_acc*100:.2f}%")
