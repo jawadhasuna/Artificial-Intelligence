@@ -3,9 +3,9 @@ import numpy as np
 import joblib
 
 # Load trained model, scaler, and feature names
-model = joblib.load("svm_rbf_model.pkl")
-scaler = joblib.load("scaler.pkl")
-selected_features = joblib.load("selected_features.pkl")
+model = joblib.load("Jawad-Wisconsin-main/svm_rbf_model.pkl")
+scaler = joblib.load("Jawad-Wisconsin-main/scaler.pkl")
+selected_features = joblib.load("Jawad-Wisconsin-main/selected_features.pkl")
 
 st.title("Breast Cancer Prediction App")
 st.write("""
@@ -58,4 +58,6 @@ if st.button("Predict"):
     st.write(f"Confidence Score: {confidence:.2f}")
 
 # Show model accuracy (from your test set)
+svm_acc = 0.9649  # replace with your actual accuracy
+
 st.write(f"Model Accuracy: {svm_acc*100:.2f}%")
