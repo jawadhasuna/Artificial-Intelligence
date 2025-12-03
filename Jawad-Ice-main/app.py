@@ -8,7 +8,7 @@ import joblib
 # -----------------------------
 # 🌳 Load the Trained Decision Tree Model
 # -----------------------------
-model = joblib.load("Jawad-Ice-main/dtmodel.pkl")  # <-- your saved model
+model = joblib.load("Jawad-Ice-main/tmodel.pkl")  # <-- your saved model
 
 st.title("🍦 Ice Cream Revenue Prediction App")
 st.write("Enter the **temperature** to predict ice cream revenue using the Decision Tree model.")
