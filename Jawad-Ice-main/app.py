@@ -36,27 +36,3 @@ if st.button("Predict Revenue 💰"):
     st.subheader("🌟 Prediction Result:")
     st.success(f"Predicted Revenue: **{prediction[0]:.2f}**")
     
-# -----------------------------
-# 📈 Optional: Show a chart comparing test data (if available)
-# -----------------------------
-if st.checkbox("Show sample dataset plot"):
-    try:
-        df = pd.read_csv("icecream_sales.csv")
-        import matplotlib.pyplot as plt
-        import numpy as np
-
-        X = df["Temperature"].values.reshape(-1,1)
-        y = df["Revenue"].values
-
-        X_grid = np.arange(min(X), max(X), 0.01).reshape(-1,1)
-        y_pred_grid = model.predict(X_grid)
-
-        plt.scatter(X, y, color='red', label='Actual Revenue')
-        plt.plot(X_grid, y_pred_grid, color='blue', label='Decision Tree Prediction')
-        plt.xlabel('Temperature')
-        plt.ylabel('Revenue')
-        plt.title('Decision Tree Regression')
-        plt.legend()
-        st.pyplot(plt)
-    except Exception as e:
-        st.error(f"Error loading dataset: {e}")
