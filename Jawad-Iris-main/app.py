@@ -7,7 +7,7 @@ import joblib
 # -----------------------------
 # 🌳 Load the Trained Decision Tree Model
 # -----------------------------
-model = joblib.load("Jawad-Iris-main/dtmodel.pkl")   # <-- your model file
+model = joblib.load("Jawad-Iris-main/model.pkl")   # <-- your model file
 
 st.title("🌸 Iris Flower Species Prediction App")
 st.write("Enter flower measurements to predict the **species** using your Decision Tree model.")
