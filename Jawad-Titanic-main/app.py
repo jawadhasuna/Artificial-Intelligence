@@ -1,6 +1,10 @@
 
 # -*- coding: utf-8 -*-
 """app.py for Titanic Survival Prediction using KNN"""
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.neighbors import KNeighborsClassifier
 
 import streamlit as st
 import pandas as pd
