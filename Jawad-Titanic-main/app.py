@@ -2,42 +2,39 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-st.title("🚢 Titanic Survival Prediction App")
-st.write("This app predicts whether a passenger would survive the Titanic disaster.")
+# Load files
+scaler = joblib.load("Jawad-Titanic-main/ss.pkl")
+model = joblib.load("Jawad-Titanic-main/knn.pkl")
 
-# Load model + scaler
-model = joblib.load("Jawad-Titanic-main/titan.pkl")
-scaler = joblib.load("Jawad-Titanic-main/scale.pkl")
+st.title("🚢 Titanic Survival Prediction (KNN Model)")
 
-# User inputs
-age = st.number_input("Age", 0.0, 100.0, 30.0)
-fare = st.number_input("Fare", 0.0, 600.0, 32.0)
-pclass1 = st.selectbox("Pclass 1 (1=yes, 0=no)", [0, 1])
-pclass2 = st.selectbox("Pclass 2 (1=yes, 0=no)", [0, 1])
-pclass3 = st.selectbox("Pclass 3 (1=yes, 0=no)", [0, 1])
-family = st.number_input("Family Size", 0, 10, 1)
+st.write("Fill in the passenger details below:")
 
-# DataFrame
-user_data = pd.DataFrame({
-    "Age": [age],
-    "Fare": [fare],
-    "Pclass_1": [pclass1],
-    "Pclass_2": [pclass2],
-    "Pclass_3": [pclass3],
-    "Family_size": [family]
+# Inputs (same features used during training)
+age = st.number_input("Age", 0, 100, 30)
+fare = st.number_input("Fare", 0.0, 600.0, 32.2)
+p1 = st.selectbox("Pclass 1", [0,1])
+p2 = st.selectbox("Pclass 2", [0,1])
+p3 = st.selectbox("Pclass 3", [0,1])
+family = st.number_input("Family Size", 0, 15, 1)
+
+# Create dataframe
+df = pd.DataFrame({
+    "Age":[age],
+    "Fare":[fare],
+    "Pclass_1":[p1],
+    "Pclass_2":[p2],
+    "Pclass_3":[p3],
+    "Family_size":[family]
 })
 
-if st.button("Predict Survival"):
-    # Scale input
-    scaled = scaler.transform(user_data)
-
-    # Predict
+if st.button("Predict"):
+    scaled = scaler.transform(df)
     pred = model.predict(scaled)[0]
     prob = model.predict_proba(scaled)[0][1]
 
-    st.subheader("Prediction Result:")
-    
+    st.subheader("Result:")
     if pred == 1:
-        st.success(f"🟩 Passenger would SURVIVE! (Probability: {prob*100:.2f}%)")
+        st.success(f"✔ Passenger is LIKELY to survive ({prob*100:.2f}% probability)")
     else:
-        st.error(f"🟥 Passenger would NOT survive. (Probability: {prob*100:.2f}%)")
+        st.error(f"✘ Passenger is UNLIKELY to survive ({prob*100:.2f}% probability)")
