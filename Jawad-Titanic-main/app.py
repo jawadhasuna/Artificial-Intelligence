@@ -2,31 +2,56 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# Load trained KNN pipeline
-model = joblib.load("Jawad-Titanic-main/titanic_knn_pipeline.pkl")
+# ----------------------------
+# Load Saved Scaler + KNN Model
+# ----------------------------
+scaler = joblib.load("Jawad-Titanic-main/scaler.pkl")
+model = joblib.load("Jawad-Titanic-main/titanic.pkl")
 
-st.title("🚢 Titanic Survival Prediction")
+st.title("🚢 Titanic Survival Prediction App")
+st.write("Enter passenger details to predict **Survival (0 = No, 1 = Yes)**")
 
-age = st.number_input("Age", min_value=0, max_value=100, value=25)
-fare = st.number_input("Fare", min_value=0.0, max_value=1000.0, value=32.0)
-pclass_1 = st.number_input("Pclass_1", min_value=0, max_value=1, value=0)
-pclass_2 = st.number_input("Pclass_2", min_value=0, max_value=1, value=0)
-pclass_3 = st.number_input("Pclass_3", min_value=0, max_value=1, value=1)
-family_size = st.number_input("Family Size", min_value=0.0, max_value=20.0, value=1.0)
+# ----------------------------
+# Input Fields
+# ----------------------------
+age = st.number_input("Age", min_value=0.0, max_value=100.0, value=30.0)
+fare = st.number_input("Fare", min_value=0.0, max_value=600.0, value=50.0)
 
-input_df = pd.DataFrame({
-    'Age': [age],
-    'Fare': [fare],
-    'Pclass_1': [pclass_1],
-    'Pclass_2': [pclass_2],
-    'Pclass_3': [pclass_3],
-    'Family_size': [family_size]
-})
+pclass = st.selectbox("Passenger Class", [1, 2, 3])
+family = st.number_input("Family Size", min_value=0, max_value=11, value=1)
 
+# One-hot encode Pclass inputs
+Pclass_1 = 1 if pclass == 1 else 0
+Pclass_2 = 1 if pclass == 2 else 0
+Pclass_3 = 1 if pclass == 3 else 0
+
+# ----------------------------
+# Prepare input as a DF
+# ----------------------------
+input_df = pd.DataFrame([{
+    "Age": age,
+    "Fare": fare,
+    "Pclass_1": Pclass_1,
+    "Pclass_2": Pclass_2,
+    "Pclass_3": Pclass_3,
+    "Family_size": family
+}])
+
+# ----------------------------
+# Predict
+# ----------------------------
 if st.button("Predict Survival"):
-    pred = model.predict(input_df)
-    prob = model.predict_proba(input_df)
-    if pred[0] == 1:
-        st.success(f"✅ Likely to Survive! Probability: {prob[0][1]*100:.2f}%")
+    # scale numerical features
+    scaled_features = scaler.transform(input_df)
+
+    # model prediction
+    pred = model.predict(scaled_features)[0]
+    prob = model.predict_proba(scaled_features)[0][1]
+
+    st.subheader("🔍 Prediction Result:")
+    if pred == 1:
+        st.success("✅ Passenger is LIKELY to Survive!")
     else:
-        st.error(f"❌ Likely Not to Survive. Probability: {prob[0][0]*100:.2f}%")
+        st.error("❌ Passenger is NOT Likely to Survive")
+
+    st.write(f"**Survival Probability:** {prob*100:.2f}%")
