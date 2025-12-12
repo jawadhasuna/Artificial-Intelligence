@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
-
+from custom_knn import CustomKNN 
 # ---------------------------------------------------------
 # Load Custom KNN Model
 # ---------------------------------------------------------
