@@ -1,40 +1,46 @@
-# -*- coding: utf-8 -*-
-"""app.py — Streamlit app for Iris Species Prediction using Decision Tree"""
 import streamlit as st
 import pandas as pd
+import numpy as np
 import joblib
 
-# -----------------------------
-# 🌳 Load the Trained Decision Tree Model
-# -----------------------------
-model = joblib.load("Jawad-Iris-main/model.pkl")   # <-- your model file
+# ---------------------------------------------------------
+# Load Custom KNN Model
+# ---------------------------------------------------------
+model = joblib.load("Jawad-Titanic-main/custom_knn_titanic.pkl")   # <-- use your pickle filename
 
-st.title("🌸 Iris Flower Species Prediction App")
-st.write("Enter flower measurements to predict the **species** using your Decision Tree model.")
 
-# -----------------------------
-# 🌼 Input Fields
-# -----------------------------
-sepal_length = st.number_input("Sepal Length (cm)", min_value=0.0, max_value=10.0, value=5.1)
-sepal_width  = st.number_input("Sepal Width (cm)", min_value=0.0, max_value=10.0, value=3.5)
-petal_length = st.number_input("Petal Length (cm)", min_value=0.0, max_value=10.0, value=1.4)
-petal_width  = st.number_input("Petal Width (cm)", min_value=0.0, max_value=10.0, value=0.2)
+# ---------------------------------------------------------
+# Streamlit UI
+# ---------------------------------------------------------
+st.title("🚢 Titanic Survival Prediction App (Custom KNN)")
+st.write("Enter passenger details to predict whether they **survived or not**.")
 
-# -----------------------------
-# 📊 Prepare Data
-# -----------------------------
+# ---------------------------------------------------------
+# User Input Fields
+# ---------------------------------------------------------
+pclass = st.number_input("Passenger Class (1 = Upper, 2 = Middle, 3 = Lower)", 1, 3, 3)
+age = st.number_input("Age", 0, 100, 25)
+sibsp = st.number_input("Number of Siblings/Spouses Aboard", 0, 10, 0)
+parch = st.number_input("Number of Parents/Children Aboard", 0, 10, 0)
+fare = st.number_input("Fare Paid", 0.0, 600.0, 30.0)
+
+# Prepare input for model
 input_data = pd.DataFrame({
-    'sepal_length': [sepal_length],
-    'sepal_width': [sepal_width],
-    'petal_length': [petal_length],
-    'petal_width': [petal_width]
+    "Pclass": [pclass],
+    "Age": [age],
+    "SibSp": [sibsp],
+    "Parch": [parch],
+    "Fare": [fare]
 })
 
-# -----------------------------
-# 🔍 Make Prediction
-# -----------------------------
-if st.button("Predict Species 🌿"):
-    prediction = model.predict(input_data)
-    
-    st.subheader("🌟 Prediction Result:")
-    st.success(f"Predicted Species: **{prediction[0]}**")
+# ---------------------------------------------------------
+# Prediction Button
+# ---------------------------------------------------------
+if st.button("Predict Survival"):
+    prediction = model.predict(input_data)[0]
+
+    st.subheader("🔍 Prediction Result:")
+    if prediction == 1:
+        st.success("🎉 The passenger **SURVIVED**!")
+    else:
+        st.error("❌ The passenger **DID NOT SURVIVE**.")
