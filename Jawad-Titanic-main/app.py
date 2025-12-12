@@ -1,46 +1,51 @@
+
 import streamlit as st
 import pandas as pd
-import numpy as np
 import joblib
-from custom_knn import CustomKNN 
-# ---------------------------------------------------------
-# Load Custom KNN Model
-# ---------------------------------------------------------
-model = joblib.load("Jawad-Titanic-main/custom_knn_titanic.pkl")   # <-- use your pickle filename
+from custom_knn import CustomKNN   # IMPORTANT: needed for unpickling
 
+st.title("🚢 Titanic Survival Prediction (Custom KNN)")
 
-# ---------------------------------------------------------
-# Streamlit UI
-# ---------------------------------------------------------
-st.title("🚢 Titanic Survival Prediction App (Custom KNN)")
-st.write("Enter passenger details to predict whether they **survived or not**.")
+# -----------------------------
+# Load Model
+# -----------------------------
+model = joblib.load("Jawad-Titanic-main/custom_knn_titanic.pkl")
 
-# ---------------------------------------------------------
-# User Input Fields
-# ---------------------------------------------------------
-pclass = st.number_input("Passenger Class (1 = Upper, 2 = Middle, 3 = Lower)", 1, 3, 3)
-age = st.number_input("Age", 0, 100, 25)
-sibsp = st.number_input("Number of Siblings/Spouses Aboard", 0, 10, 0)
-parch = st.number_input("Number of Parents/Children Aboard", 0, 10, 0)
-fare = st.number_input("Fare Paid", 0.0, 600.0, 30.0)
+# -----------------------------
+# User Inputs
+# -----------------------------
+st.subheader("Enter Passenger Details")
 
-# Prepare input for model
-input_data = pd.DataFrame({
-    "Pclass": [pclass],
-    "Age": [age],
-    "SibSp": [sibsp],
-    "Parch": [parch],
-    "Fare": [fare]
-})
+age = st.number_input("Age", min_value=0.0, max_value=100.0, value=25.0)
+fare = st.number_input("Fare", min_value=0.0, max_value=600.0, value=50.0)
 
-# ---------------------------------------------------------
-# Prediction Button
-# ---------------------------------------------------------
+pclass = st.selectbox("Passenger Class", [1, 2, 3])
+p1 = 1 if pclass == 1 else 0
+p2 = 1 if pclass == 2 else 0
+p3 = 1 if pclass == 3 else 0
+
+family = st.number_input("Family Size", min_value=0, max_value=10, value=0)
+
+# -----------------------------
+# Create input dataframe (MUST match training)
+# -----------------------------
+input_data = pd.DataFrame([{
+    "Age": age,
+    "Fare": fare,
+    "Pclass_1": p1,
+    "Pclass_2": p2,
+    "Pclass_3": p3,
+    "Family_size": family
+}])
+
+# -----------------------------
+# Prediction
+# -----------------------------
 if st.button("Predict Survival"):
     prediction = model.predict(input_data)[0]
 
-    st.subheader("🔍 Prediction Result:")
+    st.subheader("Prediction Result")
     if prediction == 1:
-        st.success("🎉 The passenger **SURVIVED**!")
+        st.success("✅ Passenger Survived")
     else:
-        st.error("❌ The passenger **DID NOT SURVIVE**.")
+        st.error("❌ Passenger Did NOT Survive")
