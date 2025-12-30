@@ -1,6 +1,10 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import sklearn
+
+st.write("Streamlit version:", st.__version__)
+st.write("scikit-learn version:", sklearn.__version__)
 # Load trained model
 
 model = joblib.load("Jawad-Fruit-main/rf_apples_oranges.pkl")
