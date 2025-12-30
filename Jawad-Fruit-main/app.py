@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import joblib
-
 # Load trained model
 
 model = joblib.load("Jawad-Fruit-main/rf_apples_oranges.pkl")
