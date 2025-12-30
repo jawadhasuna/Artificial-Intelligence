@@ -22,7 +22,7 @@ st.caption(f"scikit-learn version: {sklearn.__version__}")
 # -----------------------------
 # 🌳 Load Trained Model
 # -----------------------------
-model = joblib.load("Jawad-Fruit-main/rf_apples_oranges.pkl")
+model = joblib.load("Jawad-Fruit-main/apples_oranges.pkl")
 
 # -----------------------------
 # 🧮 Input Fields
